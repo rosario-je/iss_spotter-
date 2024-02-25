@@ -22,11 +22,44 @@ const fetchMyIP = function(callback) {
       callback(Error(msg), null);
       return;
       //If the IP address is successfully retrieved, invoke the callback with null error and the IP address
-    } else {
-      const ip = JSON.parse(body).ip;
-      callback(null, ip);
-      return;
     }
+    const ip = JSON.parse(body).ip;
+    callback(null, ip);
+    return;
+
   });
 };
-module.exports = { fetchMyIP };
+
+const fetchCoordsByIP = (ip, callback) => {
+  request(`http://ipwho.is/${ip}`, (error, response, body) => {
+
+    //If error occurrs, invoke the callback with error and null
+    if (error) {
+      callback(error, null);
+      return;
+    }
+    const parsedBody = JSON.parse(body);
+    //If the response status code is not 200, construct an error message and invoke the callback with an error
+    if (!parsedBody.success) {
+      const message = `Success status was ${parsedBody.success}. Server message says: ${parsedBody.message} when fetching for IP ${parsedBody.ip}`;
+      callback(Error(message), null);
+      return;
+    }
+    //Extract values by destructuring parsedBody
+    const { latitude, longitude } = parsedBody;
+
+    //Invoke callback
+    callback(null, { latitude, longitude });
+
+  });
+};
+
+
+
+
+
+
+
+
+
+module.exports = { fetchMyIP, fetchCoordsByIP };
