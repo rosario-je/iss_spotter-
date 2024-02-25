@@ -14,10 +14,8 @@ const fetchMyIP = function(callback) {
   //Make API request to the IP address API
   request(api, (error, response, body) => {
     //If error occurrs, invoke the callback with error and null
-    if (error) {
-      callback(error, null);
-      return;
-    }
+    if (error) return callback(error, null);
+
     //If the response status code is not 200, construct an error message and invoke the callback with an error
     if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
@@ -25,11 +23,10 @@ const fetchMyIP = function(callback) {
       return;
       //If the IP address is successfully retrieved, invoke the callback with null error and the IP address
     } else {
-      callback(null, body);
+      const ip = JSON.parse(body).ip;
+      callback(null, ip);
       return;
     }
   });
 };
-
 module.exports = { fetchMyIP };
-// fetchMyIP()
