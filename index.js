@@ -34,7 +34,7 @@ const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocat
 // });
 
 /*--------------------ISS SPOTTER 4--------------------*/
-
+//Print the times for each 
 const printPassTimes = function(passTimes) {
   for (const pass of passTimes) {
     const datetime = new Date(0);
@@ -52,4 +52,4 @@ nextISSTimesForMyLocation((error, passTimes) => {
   printPassTimes(passTimes);
 });
 
-module.exports = {printPassTimes}
+module.exports = {printPassTimes, nextISSTimesForMyLocation}
